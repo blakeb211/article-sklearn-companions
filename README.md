@@ -10,8 +10,8 @@ I found a few Sklearn insights during a machine learning deep dive last year (se
 
 # Preliminaries
 * Insights are demonstrated on the Ames housing data set.
+* Code snippets were taken from [this respository](https://github.com/blakeb211/ames-housing)
 * The reader should have a little bit of experience with Sklearn to fully appreciate these. 
-
 Let's get to it.
 
 ### Streamlined pipeline code with Feature Engine's **SklearnTransformWrapper**
@@ -141,14 +141,13 @@ rmse = mean_squared_error(y_test, y_hat, squared=False)
 ### Place ingestion and feature engineering code in an ingestion script  
 Hopefully obvious by now, but place your code that produces ready-to-model pandas dataframes into a script like **ingestion.py** and call it from all your notebooks and scripts. Good names for this function are "make_frames" and "make_cleaned". This way, ingestion or feature engineering code only needs to be changed in one place. Dependent code can simply be re-executed. 
 
-### Conclusion
-Hopefully these tips will help you save some time or write some cleaner code for your next data science project. 
-
 # Companion lib review
-* Feature-Engine - provides tranformers that can be easier to use than the Sklearn defaults, reducing boilerplate and tightening up pipelines
-* Yellowbrick - provides wrappers over estimators to make common visualizations quickly
-* XGBoost - provides an additional (and widely popular) gradient boosting implementation
-* AutoSklearn - provides AutoML functionality
+* [Feature-Engine](https://github.com/feature-engine/feature_engine) provides tranformers that can be easier to use than 
+the Sklearn defaults, reducing boilerplate and tightening up pipelines
+* [yellowbrick](https://github.com/DistrictDataLabs/yellowbrick) provides wrappers over estimators to make common 
+visualizations quickly
+* [xgboost](https://github.com/dmlc/xgboost) provides an additional (and widely popular) gradient boosting implementation
+* [auto-sklearn](https://github.com/automl/auto-sklearn) provides an automl implementation
 
 # Sources 
 1. Georgetown Data Science Certificate Program
