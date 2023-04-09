@@ -1,28 +1,29 @@
 # Title
 Better Modeling with Sklearn Companion Libs
 # Subtitle
-Write cleaner pipeline code, validate faster, and explore new models like AutoML from the comfort of your *Sklearn* skillset
+Create uncluttered pipelines, validate faster, and utilize additional algorithms like AutoML from the comfort of your *Sklearn* skillset
 
 # Motivation
-I found a few Sklearn insights during a machine learning deep dive last year (see Sources). An informal poll of working data scientists revealed that these are not widely known. Hopefully, new and experienced readers will find something useful. 
-
-Insights are demonstrated on the Ames housing data set.
+I found a few Sklearn insights during a machine learning deep dive last year (see Sources). An informal poll of working data scientists revealed that these are not common knowledge. 
 
 ![Score Barplot](./figures/score_barplot.png)
 
-Let's get to it.
+# Preliminaries
+* Insights are demonstrated on the Ames housing data set.
+* The reader should have a little bit of experience with Sklearn to fully appreciate these. 
 
+Let's get to it.
 
 ### Streamlined pipeline code with Feature Engine's **SklearnTransformWrapper**
 
-After ingestion and creating a train-test split, we construct preprocessing recipes called **Pipelines** to automate our preprocessing steps such as scaling and one-hot encoding. These are easy to read and guard against subtle data leakage during K-Fold validation.
+After ingestion and creating a train-test split, we construct preprocessing recipes called **Pipelines** to automate our preprocessing steps such as scaling and one-hot encoding. These are easy to read and share, while also guarding against subtle data leakage during K-Fold validation. E.g. If a feature is scaled before creating the train-test split, this results in leakage.
 
-Feature Engine's *SklearnTransformWrapper* wraps our StandardScaler() and OneHotEncoder() so that we can put them directly into our Pipeline object. No more ColumnTransformer. Data comes out as a dataframe so that we don't need to fumble with numpy ndarrays.
+Feature Engine's *SklearnTransformWrapper* wraps our StandardScaler() and OneHotEncoder() so that we can put them directly into our Pipeline object. No more ColumnTransformer. Data exits each step as a dataframe so that we don't need to fumble with numpy ndarrays, which are returned by default from many Sklearn transformers.
 
-Sklearn's *make_pipeline* names the steps so that our GridSearchCV object can talk to our pipeline. 
+The Sklearn helper method *make_pipeline* names the steps so that our GridSearchCV object can talk to our pipeline. 
 Just query the step names with `pipe.named_steps`. For this example it tells us that our estimator is called 'elasticnet'.
 
-GridSearchCV tunes the hyperparameters through the name of each step. 
+GridSearchCV tunes the hyperparameters through the name of each step. E.g. 'elasticnet__alpha' sends the list of values in *alpha_range* to the ElasticNet model at the end of our pipeline.
 
 ```
 # skipping typical sklearn imports and dataframe creation 
@@ -141,15 +142,16 @@ rmse = mean_squared_error(y_test, y_hat, squared=False)
 ### Place ingestion and feature engineering code in an ingestion script  
 Hopefully obvious by now, but place your code that produces ready-to-model pandas dataframes into a script like **ingestion.py** and call it from all your notebooks and scripts. Good names for this function are "make_frames" and "make_cleaned". This way, ingestion or feature engineering code only needs to be changed in one place. Dependent code can simply be re-executed. 
 
-INGESTION SCRIPT GIST
+### Conclusion
+Hopefully these tips will help you save some time or write some cleaner code for your next data science project. 
 
 # Companion lib review
-* Feature-Engine - provides simpler tranformers, reducing boilerplate and tightening up pipelines
+* Feature-Engine - provides tranformers that can be easier to use than the Sklearn defaults, reducing boilerplate and tightening up pipelines
 * Yellowbrick - provides wrappers over estimators to make common visualizations quickly
 * XGBoost - provides an additional (and widely popular) gradient boosting implementation
 * AutoSklearn - provides AutoML functionality
 
-# Sources
+# Sources 
 1. Georgetown Data Science Certificate Program
 1. Hands-on Machine Learning with R book, Boehmke and Greenwell
 1. Vectors Matrices and Least Squares book, Boyd and Vandenberghe
