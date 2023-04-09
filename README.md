@@ -71,7 +71,7 @@ viz.show()
 
 
 ### Add AutoML and Extreme Gradient Boosting to your algorithm toolbox with AutoSklearn and XGBoost
-Sklearn has a range of estimat ors including regularized regression, support vector machine, single decision trees, bagged trees, boosted trees, and deep neural nets. We can add XGBoost and AutoML functionality by importing a single package for each.
+Sklearn has a range of estimators including regularized regression, support vector machine, single decision trees, bagged trees, boosted trees, and deep neural nets. We can add XGBoost and AutoML functionality by importing a single package for each.
 
 ```
 # ... sklearn imports, create onehot encoder transform, create dataframes ...
@@ -96,7 +96,6 @@ gs = GridSearchCV(n_jobs=8, estimator=pipe, cv=10,
 
 Auto-sklearn is a package that implements an 'automl' algorithm. Note that there are several different algorithms and really the term is an umbrella term for machine learning that requires very little user input. We don't want to give the impression it is a panacea, because it is not. In some instances it may shift the analyst's effort to the feature engineering phase, and in others it may produce a model with too much complexity for a given use case. 
 
-AUTOML GIST
 ```
 # .. typical sklearn and other data science imports ... 
 # Commonly occuring pthread errors with auto-sklearn are fixed by these two lines.
