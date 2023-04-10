@@ -93,9 +93,7 @@ gs = GridSearchCV(n_jobs=8, estimator=pipe, cv=10,
                                                                      'xgbregressor__n_estimators': num_trees_range})
 ```
 
-**Auto-sklearn** is a package that implements an 'automl' algorithm. Note that there are several different algorithms and really the term is an umbrella term for machine learning that requires very little user input. **AutoML Disclaimer** We do not want to give the impression it is a panacea, because it is not. In some instances using automl may simply shift your effort to the feature engineering phase. It is also quite possible that the complicated ensemble model produced cannot be put into production due to the difficulty implementing it on your tech stack. Lastly, if interpertability is an issue, for example in a regulated setting with outside auditors, you may prefer a simpler model for that reason.
-
- This is not a magical bullet.
+**Auto-sklearn** is a package that implements an 'automl' algorithm. Note that the term is an umbrella term for machine learning that requires very little user input. **AutoML Disclaimer** We do not want to give the impression that automl is a magic bullet, because it is not. In some instances using automl may simply shift your (still considerable) effort to the feature engineering phase. It is also quite possible that the complicated ensemble model that it produces--e.g the set of several LinearSVR and Adaboost models produced below--cannot be put into production due to the difficulty of implementing it on the production tech stack. Lastly, if interpertability is high priority, we might make the trade off for a simpler model that is simpler to reason about.
 
 ```
 # .. typical sklearn and other data science imports ... 
@@ -140,7 +138,7 @@ rmse = mean_squared_error(y_test, y_hat, squared=False)
 ```
 
 ### Place ingestion and feature engineering code in an ingestion script  
-Hopefully obvious by now, but place your code that creates ready-to-model pandas dataframes into functions inside of a script. A good name for this might be 'ingestion.py'. Call this script from all your notebooks and modeling scripts. Good names for the functions are 'make_frames' and 'make_cleaned'. *This way, ingestion or feature engineering code only needs to be changed in one place. Dependent code can simply be re-executed.* 
+Hopefully this point is obvious by now. Place your code that creates ready-to-model pandas dataframes into functions inside of a script. A good name for this might be 'ingestion.py'. Call this script from all your notebooks and modeling scripts. Good names for the functions are 'make_frames' and 'make_cleaned'. *This way, ingestion or feature engineering code only needs to be changed in one place. Dependent code can simply be re-executed.* 
 
 # Companion lib review
 * [Feature-Engine](https://github.com/feature-engine/feature_engine) provides tranformers that can be easier to use than 
