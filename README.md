@@ -14,16 +14,13 @@ I found a few Sklearn insights during a machine learning deep dive last year (se
 * The reader should have a little bit of experience with Sklearn to fully appreciate these. 
 Let's get to it.
 
-### Streamlined pipeline code with Feature Engine's **SklearnTransformWrapper**
+### Simplify your pipeline code with Feature Engine's **SklearnTransformWrapper**
 
 After ingestion and creating a train-test split, we construct preprocessing recipes called **Pipelines** to automate our preprocessing steps such as scaling and one-hot encoding. These are easy to read and share, while also guarding against subtle data leakage during K-Fold validation. E.g. If a feature is scaled before creating the train-test split, this results in leakage.
 
-Feature Engine's *SklearnTransformWrapper* wraps our StandardScaler() and OneHotEncoder() so that we can put them directly into our Pipeline object. No more ColumnTransformer. Data exits each step as a dataframe so that we don't need to fumble with numpy ndarrays, which are returned by default from many Sklearn transformers.
+Feature Engine's **SklearnTransformWrapper** wraps our 'StandardScaler()' and 'OneHotEncoder()' objects so that we can put them directly into our Pipeline object. No more ColumnTransformer. Data exits each step as a dataframe, so we don't need to fumble with numpy ndarrays, which are returned by default from most transformers.
 
-The Sklearn helper method *make_pipeline* names the steps so that our GridSearchCV object can talk to our pipeline. 
-Just query the step names with `pipe.named_steps`. For this example it tells us that our estimator is called 'elasticnet'.
-
-GridSearchCV tunes the hyperparameters through the name of each step. E.g. 'elasticnet__alpha' sends the list of values in *alpha_range* to the ElasticNet model at the end of our pipeline.
+The Sklearn helper method **make_pipeline*** creates our pipeline object in one line, naming each step for us. Now our *GridSearchCV* object can send lists of parameters to the pipeline using these names. Just query the step names with `pipe.named_steps`. For this example, it tells us that our estimator (the final step) is called 'elasticnet'. E.g. 'elasticnet__alpha' sends the list of values in *alpha_range* to the ElasticNet model at the end of our pipeline.
 
 ```
 # skipping typical sklearn imports and dataframe creation 
@@ -48,9 +45,9 @@ gs = GridSearchCV(n_jobs=3, estimator=pipe, cv=10, scoring='neg_root_mean_square
 
 ### Fast and pretty model validation plots with Yellowbrick
 
-*Yellowbrick* has helper classes and functions to automatically create various important graphics and keep our thinking (mostly) up above the matplotlib api.**
+The **Yellowbrick** companion library has helper classes and functions to automatically create various important graphics and keep our thinking up above the matplotlib api.
 
-Your hyperparameter search with GridSearchCV may have covered multiple parameters. Choose one and validate it with Yellowbrick's **ValidationCurve**. 
+We can select one of the hyperparameters that we searched with *GridSearchCV* and validate it with Yellowbrick's **ValidationCurve** object. 
 
 ```
 # Create validation curve to increase confidence that algorithm is performing reasonably
@@ -71,7 +68,9 @@ viz.show()
 
 
 ### Add AutoML and Extreme Gradient Boosting to your algorithm toolbox with AutoSklearn and XGBoost
-Sklearn has a range of estimators including regularized regression, support vector machine, single decision trees, bagged trees, boosted trees, and deep neural nets. We can add XGBoost and AutoML functionality by importing a single package for each.
+Sklearn has a range of estimators including regularized regression, support vector machine, single decision trees, bagged trees, boosted trees, and deep neural nets. We can add extreme gradient boosting and AutoML functionality by importing a single package for each.
+
+**XGBoost** is a popular implementation of gradient boosted trees.
 
 ```
 # ... sklearn imports, create onehot encoder transform, create dataframes ...
@@ -94,7 +93,9 @@ gs = GridSearchCV(n_jobs=8, estimator=pipe, cv=10,
                                                                      'xgbregressor__n_estimators': num_trees_range})
 ```
 
-Auto-sklearn is a package that implements an 'automl' algorithm. Note that there are several different algorithms and really the term is an umbrella term for machine learning that requires very little user input. We don't want to give the impression it is a panacea, because it is not. In some instances it may shift the analyst's effort to the feature engineering phase, and in others it may produce a model with too much complexity for a given use case. 
+**Auto-sklearn** is a package that implements an 'automl' algorithm. Note that there are several different algorithms and really the term is an umbrella term for machine learning that requires very little user input. **AutoML Disclaimer** We do not want to give the impression it is a panacea, because it is not. In some instances using automl may simply shift your effort to the feature engineering phase. It is also quite possible that the complicated ensemble model produced cannot be put into production due to the difficulty implementing it on your tech stack. Lastly, if interpertability is an issue, for example in a regulated setting with outside auditors, you may prefer a simpler model for that reason.
+
+ This is not a magical bullet.
 
 ```
 # .. typical sklearn and other data science imports ... 
@@ -139,7 +140,7 @@ rmse = mean_squared_error(y_test, y_hat, squared=False)
 ```
 
 ### Place ingestion and feature engineering code in an ingestion script  
-Hopefully obvious by now, but place your code that produces ready-to-model pandas dataframes into a script like **ingestion.py** and call it from all your notebooks and scripts. Good names for this function are "make_frames" and "make_cleaned". This way, ingestion or feature engineering code only needs to be changed in one place. Dependent code can simply be re-executed. 
+Hopefully obvious by now, but place your code that creates ready-to-model pandas dataframes into functions inside of a script. A good name for this might be 'ingestion.py'. Call this script from all your notebooks and modeling scripts. Good names for the functions are 'make_frames' and 'make_cleaned'. *This way, ingestion or feature engineering code only needs to be changed in one place. Dependent code can simply be re-executed.* 
 
 # Companion lib review
 * [Feature-Engine](https://github.com/feature-engine/feature_engine) provides tranformers that can be easier to use than 
