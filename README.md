@@ -113,7 +113,7 @@ import autosklearn.regression
 
 # Below is a control block to save the model to a .pkl file so that 
 # we do not have to re-run a lengthy training session over and over
-# while we tweak our notebook.
+# while we tweak things.
 
 automl = {}
 filename_automl = "saved_model_automl.pkl"
@@ -138,7 +138,7 @@ rmse = mean_squared_error(y_test, y_hat, squared=False)
 ```
 
 ### Place ingestion and feature engineering code in an ingestion script  
-Hopefully this point is obvious by now. Place your code that creates ready-to-model pandas dataframes into functions inside of a script. A good name for this might be 'ingestion.py'. Call this script from all your notebooks and modeling scripts. Good names for the functions are 'make_frames' and 'make_cleaned'. *This way, ingestion or feature engineering code only needs to be changed in one place. Dependent code can simply be re-executed.* 
+Hopefully this point is obvious by now. Place your code that creates ready-to-model pandas dataframes into functions inside of a script. A good name for this might be 'ingestion.py'. Call this script from your notebooks and modeling scripts. Good names for the functions are 'make_frames' and 'make_cleaned'. *This way, ingestion or feature engineering code only needs to be changed in one place. Dependent code can simply be re-executed.* 
 
 # Companion lib review
 * [Feature-Engine](https://github.com/feature-engine/feature_engine) provides tranformers that can be easier to use than 
